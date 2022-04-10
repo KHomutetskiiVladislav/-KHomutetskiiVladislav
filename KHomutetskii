@@ -1,0 +1,62 @@
+void GetResult() {
+		Stack<double> stack_digital;
+		Stack<char> stack_sign;
+		int i = 0; double temp = 0.0;
+		while (i < expression.size()) {
+			if (expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/') {
+				stack_sign.push(expression[i++]);
+			}
+			else {
+				while (expression[i] != '+' && expression[i] != '-' && expression[i] != '*' && expression[i] != '/' && i < expression.size()) {
+					if (expression[i] != ' ') {
+						temp = temp * 10 + (expression[i++] - '0');
+					}
+					else {
+						i++;
+					}
+				}
+				stack_digital.push(temp);
+				temp = 0.0;
+			}
+		}
+
+		while (stack_sign.empty()) {
+			switch (stack_sign.Head()) {
+			case('+'): {
+				if (stack_sign[stack_sign.count() - 1] != '*' && stack_sign[stack_sign.count() - 1] != '/') {
+					double first_digital = stack_digital.Head();
+					stack_digital.pop();
+					double second_digital = stack_digital.Head();
+					stack_digital.pop();
+					stack_digital.push(second_digital + first_digital);
+					stack_sign.pop();
+				}
+
+				break;
+			}
+			case('-'): {
+				if (stack_sign[stack_sign.count() - 1] != '*' && stack_sign[stack_sign.count() - 1] != '/') {
+					if (stack_sign[stack_sign.count() - 1] != '-') {
+						double first_digital = stack_digital.Head();
+						stack_digital.pop();
+						double second_digital = stack_digital.Head();
+						stack_digital.pop();
+						stack_digital.push(second_digital - first_digital);
+						stack_sign.pop();
+					}
+					else {
+						if(stack_sign[stack_sign.count() - 1] =='-' ){
+							double first_digital = stack_digital.Head();
+							stack_digital.pop();
+							double second_digital = stack_digital.Head();
+							stack_digital.pop();
+							stack_digital.push(second_digital + first_digital);
+							stack_sign.pop();
+						}
+					}
+				}
+			}
+			}
+		}
+		cout<<stack_digital.Head();
+	}
